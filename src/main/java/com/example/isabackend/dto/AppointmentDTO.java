@@ -1,6 +1,6 @@
-package com.example.isabackend.model;
+package com.example.isabackend.dto;
 
-import jakarta.persistence.*;
+import com.example.isabackend.model.Company;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,29 +13,12 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "_appointment")
-public class Appointment {
-    @Id
-    @GeneratedValue
+public class AppointmentDTO {
     private Integer id;
-
-    @Column
     private String adminName;
-
-    @Column
     private String adminSurname;
-
-    @Column
     private Date date;
-
-    @Column
     private Time time;
-
-    @Column
     private Integer duration;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id")
     private Company company;
 }

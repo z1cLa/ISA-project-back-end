@@ -36,7 +36,7 @@ public class CompanyService {
             existingCompany.setAddress(updatedCompany.getAddress());
             existingCompany.setDescription(updatedCompany.getDescription());
             existingCompany.setAverageGrade(updatedCompany.getAverageGrade());
-            existingCompany.setFreeAppointments(updatedCompany.getFreeAppointments());
+            //existingCompany.setFreeAppointments(updatedCompany.getFreeAppointments());
 
             return companyRepository.save(existingCompany);
         }
