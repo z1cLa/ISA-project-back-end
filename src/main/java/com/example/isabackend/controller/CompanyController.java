@@ -29,4 +29,14 @@ public class CompanyController {
     public Company updateCompany(@PathVariable Integer id, @RequestBody Company updatedCompany) {
         return companyService.update(id, updatedCompany);
     }
+
+    @PostMapping("/save")
+    public Company saveCompany(@RequestBody Company company) {
+        return companyService.save(company);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteCompany(@PathVariable Integer id) {
+        companyService.remove(id);
+    }
 }
