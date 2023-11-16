@@ -6,36 +6,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-import java.util.Date;
-
+import java.util.List;
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_appointment")
-public class Appointment {
+@Table(name = "_equipment")
+public class Equipment {
     @Id
     @GeneratedValue
     private Integer id;
 
     @Column
-    private String adminName;
+    private String equipmentName;
 
     @Column
-    private String adminSurname;
+    private String equipmentType;
 
     @Column
-    private Date date;
+    private String equipmentDescription;
 
     @Column
-    private Time time;
+    private Integer equipmentPrice;
 
     @Column
-    private Integer duration;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
+    private Integer companyId;
 }
