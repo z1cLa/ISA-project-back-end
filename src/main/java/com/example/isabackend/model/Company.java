@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -34,16 +36,12 @@ public class Company {
     @Column
     private Integer appointmentId;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "appointmentId")
-    private List<Appointment> freeAppointments;
-
-    @Column
-    private Integer adminId;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "adminId")
-    private List<User> otherAdmins;
-
-
+    @ManyToMany
+    @JoinTable(
+            name = "_user_company",
+            joinColumns = @JoinColumn(name = "company_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id"})
+    )
+    private Set<User> admins = new HashSet<>();
 }
