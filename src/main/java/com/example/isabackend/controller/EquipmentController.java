@@ -42,4 +42,9 @@ public class EquipmentController {
     public void deleteEquipment(@PathVariable Integer id) {
         equipmentService.remove(id);
     }
+
+    @GetMapping("/company/{companyId}")
+    public List<Equipment> getEquipmentByCompanyId(@PathVariable Integer companyId) {
+        return equipmentService.getEquipmentByCompanyId(companyId);
+    }
 }

@@ -13,8 +13,13 @@ import java.util.List;
 
 @Service
 public class EquipmentService {
+    private final EquipmentRepository equipmentRepository;
+
     @Autowired
-    private EquipmentRepository equipmentRepository;
+    public EquipmentService(EquipmentRepository equipmentRepository) {
+        this.equipmentRepository = equipmentRepository;
+    }
+
 
     public Equipment findById(Integer id) { return equipmentRepository.findById(id).orElseGet(null);}
 
@@ -43,4 +48,10 @@ public class EquipmentService {
 
         return null;
     }
+
+    public List<Equipment> getEquipmentByCompanyId(Integer companyId) {
+        return equipmentRepository.findByCompanyId(companyId);
+    }
 }
+
+
