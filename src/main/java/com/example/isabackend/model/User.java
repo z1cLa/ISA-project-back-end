@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -36,4 +39,7 @@ public class User {
     private String companyInfo;
     @Column
     private Role role;
+
+    @ManyToMany(mappedBy = "admins")
+    private Set<Company> companies = new HashSet<>();
 }

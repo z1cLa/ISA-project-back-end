@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CompanyService {
@@ -41,6 +42,10 @@ public class CompanyService {
         }
 
         return null;
+    }
+
+    public Set<User> getAdminsByCompanyId(Integer companyId) {
+        return companyRepository.findAdminsByCompanyId(companyId);
     }
 
 }
