@@ -36,4 +36,10 @@ public class User {
     private String companyInfo;
     @Column
     private Role role;
+
+    @Column(name = "verification_code", length = 64, updatable = false)
+    private String verificationCode;
+
+    @Column
+    private boolean isVerified;
 }

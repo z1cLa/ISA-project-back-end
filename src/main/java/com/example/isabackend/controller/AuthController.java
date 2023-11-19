@@ -7,11 +7,16 @@ import com.example.isabackend.model.User;
 import com.example.isabackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -26,7 +31,7 @@ public class AuthController {
         return userService.findAll();
     }
     @PostMapping(value = "/register", consumes = "application/json")
-    public ResponseEntity<UserDTO> saveCourse(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> register(@RequestBody UserDTO userDTO) {
         User user = new User();
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -39,8 +44,29 @@ public class AuthController {
         user.setCompanyInfo(userDTO.getCompanyInfo());
         user.setRole(Role.USER);
 
+        byte[] randomBytes = new byte[48]; // 48 bytes will result in a 64-character Base64-encoded string
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(randomBytes);
+        String randomString = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+        user.setVerificationCode(randomString);
+        user.setVerified(false);
+
+        userService.sendRegistrationMail(user);
+
         user = userService.save(user);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyEmail(@RequestParam("code") String code) {
+        // Call the UserService to verify the email
+        boolean success = userService.verify(code);
+
+        if (success) {
+            return new ResponseEntity<>("Email verified successfully.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid verification code.", HttpStatus.BAD_REQUEST);
+        }
     }
     @GetMapping(value = "/user/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {

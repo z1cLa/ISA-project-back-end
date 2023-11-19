@@ -14,9 +14,20 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: isa.grupa7@gmail.com
+    password: zgyp ombx nggr ngnt
+    port: '587'
 
 server:
-  port: 8090
+  port: 8095
 
 logging:
   level:
