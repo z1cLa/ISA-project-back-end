@@ -27,7 +27,7 @@ spring:
     port: '587'
 
 server:
-  port: 8095
+  port: 8090
 
 logging:
   level:
