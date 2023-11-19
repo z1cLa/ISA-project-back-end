@@ -1,0 +1,36 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/isa
+    username: postgres
+    password: super
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: isa.grupa7@gmail.com
+    password: zgyp ombx nggr ngnt
+    port: '587'
+
+server:
+  port: 8095
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
