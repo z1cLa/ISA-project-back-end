@@ -41,7 +41,7 @@ public class UserService {
         String mailContent = "<p> Dear " + user.getFirstName() + ", </p>";
         mailContent += "<p> Please click the link below to verify your registration: </p>";
 
-        String verifyURL = "http://localhost:8095" + "/api/v1/auth/verify?code=" + user.getVerificationCode();
+        String verifyURL = "http://localhost:8090" + "/api/v1/auth/verify?code=" + user.getVerificationCode();
         mailContent += "<h3><a href=\""+ verifyURL + "\">VERIFY</a></h3>";
         mailContent += "<p>Thank you <br> ISA Group 7</p>";
 
