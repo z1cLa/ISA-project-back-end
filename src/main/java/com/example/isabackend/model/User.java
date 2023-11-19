@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -36,10 +39,11 @@ public class User {
     private String companyInfo;
     @Column
     private Role role;
-
     @Column(name = "verification_code", length = 64, updatable = false)
     private String verificationCode;
-
     @Column
     private boolean isVerified;
+    @ManyToMany(mappedBy = "admins")
+    private Set<Company> companies = new HashSet<>();
+
 }
