@@ -44,6 +44,12 @@ public class AuthController {
         user.setCompanyInfo(userDTO.getCompanyInfo());
         user.setRole(Role.USER);
 
+        if(user.getFirstName().isBlank() || user.getLastName().isBlank() || user.getEmail().isBlank() || user.getPassword().length() < 8
+        || user.getCountry().isBlank() || user.getCity().isBlank() || user.getProfession().isBlank() || user.getPhoneNumber().length() < 7
+        || user.getCompanyInfo().isBlank()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
         byte[] randomBytes = new byte[48]; // 48 bytes will result in a 64-character Base64-encoded string
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(randomBytes);
