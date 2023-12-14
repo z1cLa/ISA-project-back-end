@@ -103,20 +103,7 @@ public class AuthController {
         User existingUser = userService.findOne(id);
 
         if (existingUser != null) {
-            // Update existingUser with values from updatedUserDTO
-            existingUser.setFirstName(updatedUserDTO.getFirstName());
-            existingUser.setLastName(updatedUserDTO.getLastName());
-            existingUser.setEmail(updatedUserDTO.getEmail());
-            existingUser.setPassword(updatedUserDTO.getPassword());
-            existingUser.setCountry(updatedUserDTO.getCountry());
-            existingUser.setCity(updatedUserDTO.getCity());
-            existingUser.setProfession(updatedUserDTO.getProfession());
-            existingUser.setPhoneNumber(updatedUserDTO.getPhoneNumber());
-            existingUser.setCompanyInfo(updatedUserDTO.getCompanyInfo());
-
-            // Save the updated user
-            existingUser = userService.save(existingUser);
-
+            existingUser = userService.update(existingUser,updatedUserDTO);
             return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
