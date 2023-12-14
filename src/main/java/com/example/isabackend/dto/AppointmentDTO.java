@@ -1,7 +1,6 @@
 package com.example.isabackend.dto;
 
 import com.example.isabackend.model.Company;
-import com.example.isabackend.model.Equipment;
 import com.example.isabackend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

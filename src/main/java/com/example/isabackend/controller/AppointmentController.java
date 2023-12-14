@@ -1,15 +1,11 @@
 package com.example.isabackend.controller;
 
 import com.example.isabackend.model.Appointment;
-import com.example.isabackend.model.Company;
-import com.example.isabackend.model.User;
 import com.example.isabackend.service.AppointmentService;
-import com.example.isabackend.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/appointment")
