@@ -1,11 +1,16 @@
 package com.example.isabackend.controller;
 
+import com.example.isabackend.dto.CompanyDTO;
+import com.example.isabackend.mapper.CompanyMapper;
 import com.example.isabackend.model.Company;
 import com.example.isabackend.model.User;
 import com.example.isabackend.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,8 +28,13 @@ public class CompanyController {
     }
 
     @GetMapping("/all")
-    public List<Company> getAllCompanies() {
-        return companyService.findAll();
+    public ResponseEntity<List<CompanyDTO>> getAllCompanies() {
+        List<CompanyDTO> allCompaniesDTO =new ArrayList<>();
+        List<Company> allCompanies =new ArrayList<>();
+        allCompanies = companyService.findAll();
+        CompanyMapper companyMapper = new CompanyMapper();
+        allCompaniesDTO = companyMapper.CompanyListToDTO(allCompanies);
+        return new ResponseEntity<>(allCompaniesDTO, HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")

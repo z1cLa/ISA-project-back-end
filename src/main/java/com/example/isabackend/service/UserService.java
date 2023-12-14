@@ -1,5 +1,6 @@
 package com.example.isabackend.service;
 
+import com.example.isabackend.dto.UserDTO;
 import com.example.isabackend.model.User;
 import com.example.isabackend.repository.UserRepository;
 import jakarta.mail.MessagingException;
@@ -68,6 +69,23 @@ public class UserService {
             System.out.println(user.getId());
             return true;
         }
+    }
+
+    public User update(User user, UserDTO userDTO) {
+        if (!userRepository.existsById(user.getId())) {
+            return null;
+        }
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setCountry(userDTO.getCountry());
+        user.setCity(userDTO.getCity());
+        user.setProfession(userDTO.getProfession());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setCompanyInfo(userDTO.getCompanyInfo());
+        User updatedUser = userRepository.save(user);
+        return updatedUser;
     }
 
 }
