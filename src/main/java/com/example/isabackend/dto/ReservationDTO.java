@@ -1,5 +1,6 @@
 package com.example.isabackend.dto;
 
+import com.example.isabackend.model.Appointment;
 import com.example.isabackend.model.Company;
 import com.example.isabackend.model.Equipment;
 import com.example.isabackend.model.User;
@@ -8,19 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-import java.util.Date;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppointmentDTO {
+public class ReservationDTO {
     private Integer id;
-    private Date date;
-    private Time time;
-    private Integer duration;
-    private Boolean isCompaniesAppointment;
-    private Company company;
+    private String status;
     private User user;
+    private Appointment appointment;
+    private Equipment equipment;
 }

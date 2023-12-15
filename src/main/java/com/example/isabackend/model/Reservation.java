@@ -5,39 +5,30 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Time;
-import java.util.Date;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_appointment")
-public class Appointment {
+@Table(name = "_reservation")
+public class Reservation {
+
     @Id
     @GeneratedValue
     private Integer id;
 
     @Column
-    private Date date;
-
-    @Column
-    private Time time;
-
-    @Column
-    private Integer duration;
-
-    @Column
-    private Boolean isCompaniesAppointment;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
+
+    @ManyToOne
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment;
 }
