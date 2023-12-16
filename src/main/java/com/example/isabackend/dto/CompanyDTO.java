@@ -18,6 +18,5 @@ public class CompanyDTO {
     private String address;
     private String description;
     private Float averageGrade;
-    private Integer appointmentId;
     private Set<User> admins;
 }

@@ -20,7 +20,6 @@ public class CompanyMapper {
             companyDTO.setAddress(company.getAddress());
             companyDTO.setDescription(company.getDescription());
             companyDTO.setAverageGrade(company.getAverageGrade());
-            companyDTO.setAppointmentId(company.getAppointmentId());
             companyDTO.setAdmins(company.getAdmins());
             allCompaniesDTO.add(companyDTO);
         }

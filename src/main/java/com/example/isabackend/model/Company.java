@@ -33,9 +33,6 @@ public class Company {
     @Column
     private Float averageGrade;
 
-    @Column
-    private Integer appointmentId;
-
     @ManyToMany
     @JoinTable(
             name = "_user_company",
