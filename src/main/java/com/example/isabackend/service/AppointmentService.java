@@ -22,6 +22,10 @@ public class AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
+    public List<Appointment> findByCompanyIdAndIsCompaniesAppointmentTrue(Integer companyId) {
+        return appointmentRepository.findByCompanyIdAndIsCompaniesAppointmentTrue(companyId);
+    }
+
 
 
 }

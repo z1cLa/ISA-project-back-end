@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,5 +20,5 @@ public class ReservationDTO {
     private String status;
     private User user;
     private Appointment appointment;
-    private Equipment equipment;
+    private Set<Equipment> equipments;
 }

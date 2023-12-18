@@ -33,4 +33,8 @@ public class AppointmentController {
         appointmentService.remove(id);
     }
 
+    @GetMapping("/byCompany/{companyId}")
+    public List<Appointment> getAppointmentsByCompanyIdAndIsCompaniesAppointmentTrue(@PathVariable Integer companyId) {
+        return appointmentService.findByCompanyIdAndIsCompaniesAppointmentTrue(companyId);
+    }
 }
