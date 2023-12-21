@@ -1,6 +1,9 @@
 package com.example.isabackend.service;
 
+import com.example.isabackend.dto.AppointmentDTO;
+import com.example.isabackend.dto.UserDTO;
 import com.example.isabackend.model.Appointment;
+import com.example.isabackend.model.User;
 import com.example.isabackend.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,15 @@ public class AppointmentService {
 
     public List<Appointment> findByCompanyIdAndIsCompaniesAppointmentTrue(Integer companyId) {
         return appointmentRepository.findByCompanyIdAndIsCompaniesAppointmentTrue(companyId);
+    }
+
+    public Appointment updateWhenReserved(Appointment appointment) {
+        if (!appointmentRepository.existsById(appointment.getId())) {
+            return null;
+        }
+        appointment.setIsCompaniesAppointment(false);
+        Appointment updatedAppointment = appointmentRepository.save(appointment);
+        return updatedAppointment;
     }
 
 

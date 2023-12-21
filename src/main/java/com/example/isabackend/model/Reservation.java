@@ -36,8 +36,7 @@ public class Reservation {
     @JoinTable(
             name = "_reservation_equipment",
             joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "equipment_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id"})
+            inverseJoinColumns = @JoinColumn(name = "equipment_id")
     )
     private Set<Equipment> equipments = new HashSet<>();
 }
