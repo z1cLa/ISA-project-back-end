@@ -4,6 +4,8 @@ import com.example.isabackend.model.Company;
 import com.example.isabackend.model.User;
 import com.example.isabackend.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +25,15 @@ public class CompanyController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('USER')")
     public List<Company> getAllCompanies() {
         return companyService.findAll();
+    }
+
+    @GetMapping("/test")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> testAuth(){
+        return ResponseEntity.ok("GRINGO");
     }
 
     @PutMapping("/update/{id}")

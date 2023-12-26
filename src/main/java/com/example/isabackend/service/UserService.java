@@ -1,5 +1,7 @@
 package com.example.isabackend.service;
 
+import com.example.isabackend.dto.UserDTO;
+import com.example.isabackend.model.Role;
 import com.example.isabackend.model.User;
 import com.example.isabackend.repository.UserRepository;
 import jakarta.mail.MessagingException;
@@ -7,17 +9,30 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleService roleService;
+
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
 
     public User findOne(Integer id) {
         return userRepository.findById(id).orElseGet(null);
@@ -25,6 +40,29 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+    public User save(UserDTO userRequest) {
+        User u = new User();
+        u.setEmail(userRequest.getEmail());
+
+        // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
+        // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        u.setFirstName(userRequest.getFirstName());
+        u.setLastName(userRequest.getLastName());
+        u.setProfession(userRequest.getProfession());
+        u.setCity(userRequest.getCity());
+        u.setCountry(userRequest.getCountry());
+        u.setPhoneNumber(userRequest.getPhoneNumber());
+        u.setCompanyInfo(userRequest.getCompanyInfo());
+        u.setVerified(true);
+
+        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        List<Role> roles = roleService.findByName("ROLE_USER");
+        u.setRoles(roles);
+
+        return this.userRepository.save(u);
     }
 
     public User save(User exam) {
@@ -70,4 +108,13 @@ public class UserService {
         }
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
+        } else {
+            return user;
+        }
+    }
 }
