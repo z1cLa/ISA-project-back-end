@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
@@ -49,7 +51,6 @@ public class AuthController {
             @RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
         // Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
         // AuthenticationException
-        System.out.println("USAO!!!!!!");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 authenticationRequest.getEmail(), authenticationRequest.getPassword()));
 
@@ -72,7 +73,7 @@ public class AuthController {
     public List<User> getAllUsers() {
         return userService.findAll();
     }
-    @PostMapping(value = "/register")
+    @PostMapping(value = "register")
     public ResponseEntity<User> addUser(@RequestBody UserDTO userRequest, UriComponentsBuilder ucBuilder) {
         User existUser = this.userService.findByEmail(userRequest.getEmail());
 
@@ -96,6 +97,13 @@ public class AuthController {
             return new ResponseEntity<>("Invalid verification code.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/whoami")
+    public User user(Principal user) {
+        return this.userService.findByEmail(user.getName());
+    }
+
+
 //    @GetMapping(value = "/user/{id}")
 //    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
 //        User user = userService.findOne(id);

@@ -84,15 +84,9 @@ public class WebSecurityConfig {
         // ovo nije slucaj kao sa sesijama koje se cuvaju na serverskoj strani - STATEFULL aplikacija
         http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll() // Allow all requests under /api/v1/auth
+                        .requestMatchers(new AntPathRequestMatcher("/api/v1/auth/**")).permitAll()
                         .anyRequest().authenticated()
                 )
-//                .formLogin(form -> form
-//                        .loginPage("/api/v1/auth/login")
-//                        .permitAll()
-//                );
-//                .logout(logout -> logout
-//                        .permitAll());
 
 
 
@@ -110,8 +104,7 @@ public class WebSecurityConfig {
         // Autentifikacija ce biti ignorisana ispod navedenih putanja (kako bismo ubrzali pristup resursima)
         // Zahtevi koji se mecuju za web.ignoring().antMatchers() nemaju pristup SecurityContext-u
         // Dozvoljena POST metoda na ruti /auth/login, za svaki drugi tip HTTP metode greska je 401 Unauthorized
-        //return (web) -> web.ignoring().requestMatchers("/api/v1/auth/login");
-        return web -> web.ignoring().requestMatchers("adfadffda");
+        return (web) -> web.ignoring().requestMatchers("/api/v1/auth/login");
 
     }
 
