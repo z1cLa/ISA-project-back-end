@@ -9,12 +9,15 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -56,11 +59,19 @@ public class UserService implements UserDetailsService {
         u.setCountry(userRequest.getCountry());
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setCompanyInfo(userRequest.getCompanyInfo());
-        u.setVerified(true);
+
+        byte[] randomBytes = new byte[48]; // 48 bytes will result in a 64-character Base64-encoded string
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(randomBytes);
+        String randomString = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+        u.setVerificationCode(randomString);
+        u.setVerified(false);
 
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName("ROLE_USER");
         u.setRoles(roles);
+
+        this.sendRegistrationMail(u);
 
         return this.userRepository.save(u);
     }
@@ -73,6 +84,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
+    @Async
     public void sendRegistrationMail(User user){
         String subject = "Please verify your registration";
         String senderName = "ISA Group 7";
