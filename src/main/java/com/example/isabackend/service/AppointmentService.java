@@ -22,6 +22,19 @@ public class AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
+    public List<Appointment> findByCompanyIdAndIsCompaniesAppointmentTrue(Integer companyId) {
+        return appointmentRepository.findByCompanyIdAndIsCompaniesAppointmentTrue(companyId);
+    }
+
+    public Appointment updateWhenReserved(Appointment appointment) {
+        if (!appointmentRepository.existsById(appointment.getId())) {
+            return null;
+        }
+        appointment.setIsCompaniesAppointment(false);
+        Appointment updatedAppointment = appointmentRepository.save(appointment);
+        return updatedAppointment;
+    }
+
 
 
 }
