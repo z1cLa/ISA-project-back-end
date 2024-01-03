@@ -1,6 +1,7 @@
 package com.example.isabackend.controller;
 
 import com.example.isabackend.model.Appointment;
+import com.example.isabackend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
