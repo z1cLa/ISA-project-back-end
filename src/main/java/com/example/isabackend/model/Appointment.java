@@ -21,12 +21,6 @@ public class Appointment {
     private Integer id;
 
     @Column
-    private String adminName;
-
-    @Column
-    private String adminSurname;
-
-    @Column
     private Date date;
 
     @Column
@@ -35,7 +29,15 @@ public class Appointment {
     @Column
     private Integer duration;
 
+    @Column
+    private Boolean isCompaniesAppointment;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
