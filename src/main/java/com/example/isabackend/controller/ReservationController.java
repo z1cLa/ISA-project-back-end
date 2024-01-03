@@ -3,6 +3,7 @@ package com.example.isabackend.controller;
 import com.example.isabackend.model.Appointment;
 import com.example.isabackend.model.Reservation;
 import com.example.isabackend.service.AppointmentService;
+import com.example.isabackend.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
