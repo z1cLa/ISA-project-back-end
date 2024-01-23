@@ -32,6 +32,9 @@ public class Appointment {
     @Column
     private Boolean isCompaniesAppointment;
 
+    @Column
+    private Boolean isReserved;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
