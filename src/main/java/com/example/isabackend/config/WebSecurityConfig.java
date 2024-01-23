@@ -85,7 +85,12 @@ public class WebSecurityConfig {
         // ovo nije slucaj kao sa sesijama koje se cuvaju na serverskoj strani - STATEFULL aplikacija
         http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("**").permitAll()
+                                .requestMatchers("**").permitAll()
+//                        .requestMatchers("api/v1/auth/**").permitAll()
+//                        .requestMatchers("api/v1/reservation/**").hasRole("USER")
+//                        .requestMatchers("api/v1/company/**").hasRole("USER")
+//                        .requestMatchers("api/v1/equipment/**").hasRole("USER")
+//                        .requestMatchers("api/v1/appointment/**").hasRole("USER")
                         .anyRequest().authenticated()
                 ).cors(Customizer.withDefaults());
 

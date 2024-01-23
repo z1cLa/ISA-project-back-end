@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Service
 public class ReservationService {
@@ -59,6 +60,10 @@ public class ReservationService {
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
         return pngOutputStream.toByteArray();
+    }
+
+    public List<Reservation> getUserReservations(Integer id){
+        return this.reservationRepository.getUserReservations(id);
     }
 
     public Reservation save(Reservation exam) throws IOException, WriterException, MessagingException {
