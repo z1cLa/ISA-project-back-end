@@ -6,6 +6,7 @@ import com.example.isabackend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/appointment")
 @RequiredArgsConstructor
-@CrossOrigin
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -27,6 +27,7 @@ public class AppointmentController {
     public List<Appointment> getAllAppointments() {
         return appointmentService.findAll();
     }
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public Appointment saveAppointment(@RequestBody Appointment appointment) {
         return appointmentService.save(appointment);

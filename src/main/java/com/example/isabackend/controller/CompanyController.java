@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
-
 @RestController
 @RequestMapping("/api/v1/company")
 @RequiredArgsConstructor
-@CrossOrigin
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -25,21 +23,16 @@ public class CompanyController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     public List<Company> getAllCompanies() {
         return companyService.findAll();
-    }
-
-    @GetMapping("/test")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<String> testAuth(){
-        return ResponseEntity.ok("GRINGO");
     }
 
     @PutMapping("/update/{id}")
     public Company updateCompany(@PathVariable Integer id, @RequestBody Company updatedCompany) {
         return companyService.update(id, updatedCompany);
     }
+
 
     @PostMapping("/save")
     public Company saveCompany(@RequestBody Company company) {
