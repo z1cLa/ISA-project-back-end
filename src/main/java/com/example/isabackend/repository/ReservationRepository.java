@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
-    @Query("SELECT r FROM Reservation r WHERE r.user = ?1")
+    @Query("SELECT r FROM Reservation r WHERE r.user.id = ?1")
     public List<Reservation> getUserReservations(Integer id);
 }

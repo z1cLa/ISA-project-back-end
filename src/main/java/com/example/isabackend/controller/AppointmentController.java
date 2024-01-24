@@ -38,8 +38,8 @@ public class AppointmentController {
     }
 
     @GetMapping("/byCompany/{companyId}")
-    public List<Appointment> getAppointmentsByCompanyIdAndIsCompaniesAppointmentTrue(@PathVariable Integer companyId) {
-        return appointmentService.findByCompanyIdAndIsCompaniesAppointmentTrue(companyId);
+    public List<Appointment> findByCompanyIdAndIsReservedFalse(@PathVariable Integer companyId) {
+        return appointmentService.findByCompanyIdAndIsReservedFalse(companyId);
     }
 
     @PutMapping(value = "/update/{id}", consumes = "application/json")

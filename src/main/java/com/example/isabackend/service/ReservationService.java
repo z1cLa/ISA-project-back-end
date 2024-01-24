@@ -2,6 +2,7 @@ package com.example.isabackend.service;
 
 import com.example.isabackend.model.Reservation;
 import com.example.isabackend.model.User;
+import com.example.isabackend.repository.AppointmentRepository;
 import com.example.isabackend.repository.ReservationRepository;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -27,6 +28,9 @@ public class ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -76,6 +80,11 @@ public class ReservationService {
 
         // Return the saved reservation
         return savedReservation;
+    }
+
+    public void cancelReservation(Integer id, Integer points){
+        this.appointmentService.updateWhenCanceled(this.reservationRepository.findById(id).get().getAppointment(), points);
+        this.reservationRepository.delete(this.reservationRepository.findById(id).get());
     }
 
 

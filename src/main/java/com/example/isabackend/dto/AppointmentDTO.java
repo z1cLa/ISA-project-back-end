@@ -20,6 +20,7 @@ public class AppointmentDTO {
     private Time time;
     private Integer duration;
     private Boolean isCompaniesAppointment;
+    private Boolean isReserved;
     private Company company;
     private User user;
 }

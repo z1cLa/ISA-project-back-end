@@ -56,6 +56,9 @@ public class User implements UserDetails {
     private String verificationCode;
     @Column
     private boolean isVerified;
+
+    @Column
+    private Integer penaltyPoints;
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
     @ManyToMany(mappedBy = "admins")

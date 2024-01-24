@@ -27,4 +27,5 @@ public class UserDTO {
     private String profession;
     private String companyInfo;
     private Role role;
+    private Integer penaltyPoints;
 }

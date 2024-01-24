@@ -12,6 +12,9 @@ public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    @Autowired
+    private UserService userService;
+
     public Appointment findById(Integer id) { return appointmentRepository.findById(id).orElseGet(null);}
 
     public List<Appointment> findAll() {return appointmentRepository.findAll();}
@@ -22,15 +25,25 @@ public class AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
-    public List<Appointment> findByCompanyIdAndIsCompaniesAppointmentTrue(Integer companyId) {
-        return appointmentRepository.findByCompanyIdAndIsCompaniesAppointmentTrue(companyId);
+    public List<Appointment> findByCompanyIdAndIsReservedFalse(Integer companyId) {
+        return appointmentRepository.findByCompanyIdAndIsReservedFalse(companyId);
     }
 
     public Appointment updateWhenReserved(Appointment appointment) {
         if (!appointmentRepository.existsById(appointment.getId())) {
             return null;
         }
-        appointment.setIsCompaniesAppointment(false);
+        appointment.setIsReserved(true);
+        Appointment updatedAppointment = appointmentRepository.save(appointment);
+        return updatedAppointment;
+    }
+
+    public Appointment updateWhenCanceled(Appointment appointment, Integer points){
+        if (!appointmentRepository.existsById(appointment.getId())) {
+            return null;
+        }
+        appointment.setIsReserved(false);
+        this.userService.addPenaltyPoints(appointment.getUser().getId().intValue(), points);
         Appointment updatedAppointment = appointmentRepository.save(appointment);
         return updatedAppointment;
     }

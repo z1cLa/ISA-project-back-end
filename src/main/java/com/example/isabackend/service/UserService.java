@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -59,6 +60,7 @@ public class UserService implements UserDetailsService {
         u.setCountry(userRequest.getCountry());
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setCompanyInfo(userRequest.getCompanyInfo());
+        u.setPenaltyPoints(0);
 
         byte[] randomBytes = new byte[48]; // 48 bytes will result in a 64-character Base64-encoded string
         SecureRandom secureRandom = new SecureRandom();
@@ -75,6 +77,20 @@ public class UserService implements UserDetailsService {
 
         return this.userRepository.save(u);
     }
+
+    public User addPenaltyPoints(Integer id, Integer points) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Integer currentPoints = user.getPenaltyPoints();
+            user.setPenaltyPoints(currentPoints + points);
+            return userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+    }
+
 
     public User save(User exam) {
         return userRepository.save(exam);
