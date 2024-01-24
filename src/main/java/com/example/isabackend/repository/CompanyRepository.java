@@ -12,4 +12,8 @@ import java.util.Set;
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Query("SELECT c.admins FROM Company c WHERE c.id = :companyId")
     Set<User> findAdminsByCompanyId(@Param("companyId") Integer companyId);
+
+    @Query("SELECT c.id FROM Company c JOIN c.admins u WHERE u.id = :userId")
+    Integer findCompanyIdByUserId(@Param("userId") Long userId);
+
 }

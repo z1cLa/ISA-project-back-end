@@ -48,4 +48,7 @@ public class CompanyService {
         return companyRepository.findAdminsByCompanyId(companyId);
     }
 
+    public Integer findCompanyIdByUserId(Long userId) {
+        return companyRepository.findCompanyIdByUserId(userId);
+    }
 }

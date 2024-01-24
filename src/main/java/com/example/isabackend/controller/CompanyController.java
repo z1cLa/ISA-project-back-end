@@ -48,4 +48,9 @@ public class CompanyController {
     public Set<User> getAdminsByCompanyId(@PathVariable Integer companyId) {
         return companyService.getAdminsByCompanyId(companyId);
     }
+
+    @GetMapping("/companyId/{userId}")
+    public Integer getCompanyIdByUserId(@PathVariable Long userId) {
+        return companyService.findCompanyIdByUserId(userId);
+    }
 }
