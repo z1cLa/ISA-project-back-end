@@ -22,12 +22,10 @@ public class AppointmentController {
     public Appointment getAppointmentById(@PathVariable Integer id) {
         return appointmentService.findById(id);
     }
-
     @GetMapping("/all")
     public List<Appointment> getAllAppointments() {
         return appointmentService.findAll();
     }
-    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public Appointment saveAppointment(@RequestBody Appointment appointment) {
         return appointmentService.save(appointment);
