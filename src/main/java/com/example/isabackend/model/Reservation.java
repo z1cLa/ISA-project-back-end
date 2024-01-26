@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -29,7 +32,11 @@ public class Reservation {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-    @ManyToOne
-    @JoinColumn(name = "equipment_id")
-    private Equipment equipment;
+    @ManyToMany
+    @JoinTable(
+            name = "_reservation_equipment",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipment_id")
+    )
+    private Set<Equipment> equipments = new HashSet<>();
 }
