@@ -103,6 +103,12 @@ public class AuthController {
         return this.userService.findByEmail(user.getName());
     }
 
+    @GetMapping("/oneUser/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Integer id)
+    {
+        return new ResponseEntity<>(this.userService.findOne(id), HttpStatus.OK);
+    }
+
 
 //    @GetMapping(value = "/user/{id}")
 //    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {

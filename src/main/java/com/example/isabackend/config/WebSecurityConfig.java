@@ -86,9 +86,10 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("api/v1/auth/**").permitAll()
+                        .requestMatchers("api/v1/auth/oneUser/**").hasRole("USER")
                         .requestMatchers("api/v1/reservation/**").hasRole("USER")
                         .requestMatchers("api/v1/company/update/**").hasRole("ADMIN")
-                        .requestMatchers("api/v1/company/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/company/**").permitAll()
 //                        .requestMatchers("api/v1/equipment/company/**").hasRole("ADMIN")
 //                        .requestMatchers("api/v1/equipment/save/**").hasRole("ADMIN")
 //                        .requestMatchers("api/v1/equipment/**").hasRole("ADMIN")
