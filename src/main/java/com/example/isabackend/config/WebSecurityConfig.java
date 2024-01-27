@@ -84,23 +84,23 @@ public class WebSecurityConfig {
         // ovo znaci da server ne pamti nikakvo stanje, tokeni se ne cuvaju na serveru
         // ovo nije slucaj kao sa sesijama koje se cuvaju na serverskoj strani - STATEFULL aplikacija
         http
-                .authorizeHttpRequests(requests -> requests
+        .authorizeHttpRequests(requests -> requests
                         //AUTH CONTROLLER
                         .requestMatchers("api/v1/auth/**").permitAll()
 
                         //APPOINTMENT CONTROLLER
-                        .requestMatchers("api/v1/appointment/id/**").hasAnyRole()
+                        .requestMatchers("api/v1/appointment/id/**").hasAnyRole("USER","ADMIN","SYSADMIN")
                         .requestMatchers("api/v1/appointment/all").hasRole("USER")
-                        .requestMatchers("api/v1/appointment/save").hasAnyRole()
+                        .requestMatchers("api/v1/appointment/save").hasAnyRole("USER","ADMIN","SYSADMIN")
                         .requestMatchers("api/v1/appointment/delete/**").hasRole("ADMIN")
-                        .requestMatchers("api/v1/appointment/byCompany/**").hasAnyRole()
+                        .requestMatchers("api/v1/appointment/byCompany/**").hasAnyRole("USER","ADMIN","SYSADMIN")
                         .requestMatchers("api/v1/appointment/update/**").hasRole("ADMIN")
 
                         //CANCELLATION CONTROLLER
                         .requestMatchers("api/v1/cancellation/**").hasRole("USER")
 
                         //COMPANY CONTROLLER
-                        .requestMatchers("api/v1/company/id/**").hasAnyRole()
+                        .requestMatchers("api/v1/company/id/**").hasAnyRole("USER","ADMIN","SYSADMIN")
                         .requestMatchers("api/v1/company/all").permitAll()
                         .requestMatchers("api/v1/company/update/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/company/save").hasRole("SYSADMIN")
@@ -113,11 +113,11 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/equipment/update/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/equipment/save").hasRole("ADMIN")
                         .requestMatchers("api/v1/equipment/delete/**").hasRole("ADMIN")
-                        .requestMatchers(" api/v1/equipment/company/**").hasAnyRole()
+                        .requestMatchers(" api/v1/equipment/company/**").hasAnyRole("USER","ADMIN","SYSADMIN")
 
                         //RESERVATION CONTROLLER
                         .requestMatchers("api/v1/reservation/save").hasRole("USER")
-                        .requestMatchers("api/v1/reservation/id/**").hasAnyRole()
+                        .requestMatchers("api/v1/reservation/id/**").hasAnyRole("USER","ADMIN","SYSADMIN")
                         .requestMatchers("api/v1/reservation/user/**").hasRole("USER")
                         .requestMatchers("api/v1/reservation/company/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/reservation/cancel/**").hasRole("USER")
