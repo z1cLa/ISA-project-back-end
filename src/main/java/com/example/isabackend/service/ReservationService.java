@@ -70,6 +70,10 @@ public class ReservationService {
         return this.reservationRepository.getUserReservations(id);
     }
 
+    public List<Reservation> getCompanyReservations(Integer id){
+        return this.reservationRepository.getCompanyReservations(id);
+    }
+
     public Reservation save(Reservation exam) throws IOException, WriterException, MessagingException {
         // First, save the reservation to the database to get the generated ID
         Reservation savedReservation = reservationRepository.save(exam);

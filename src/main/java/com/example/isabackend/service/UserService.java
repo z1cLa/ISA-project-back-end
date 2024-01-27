@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -91,6 +92,23 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Transactional
+    public void makeUserAdmin(Integer userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<Role> adminRoles = roleService.findByName("ROLE_ADMIN");
+
+            // Add ADMIN role to the user's roles
+            user.getRoles().addAll(adminRoles);
+
+            // Save the user with the updated roles
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+    }
 
     public User save(User exam) {
         return userRepository.save(exam);

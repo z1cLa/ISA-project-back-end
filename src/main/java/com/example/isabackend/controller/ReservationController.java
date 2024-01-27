@@ -41,6 +41,11 @@ public class ReservationController {
         return reservationService.getUserReservations(id);
     }
 
+    @GetMapping("/company/{id}")
+    public List<Reservation> getCompanyReservations(@PathVariable Integer id) {
+        return reservationService.getCompanyReservations(id);
+    }
+
     @DeleteMapping("/cancel/{reservationId}/{points}")
     public ResponseEntity<?> cancelReservation(@PathVariable Integer reservationId,
                                                @PathVariable Integer points) {
