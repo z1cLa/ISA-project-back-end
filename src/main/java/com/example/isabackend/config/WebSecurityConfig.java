@@ -85,19 +85,46 @@ public class WebSecurityConfig {
         // ovo nije slucaj kao sa sesijama koje se cuvaju na serverskoj strani - STATEFULL aplikacija
         http
                 .authorizeHttpRequests(requests -> requests
-//                        .requestMatchers("api/v1/auth/**").permitAll()
-//                        .requestMatchers("api/v1/reservation/**").hasRole("USER")
-//                        .requestMatchers("api/v1/company/update/**").hasRole("ADMIN")
-//                        .requestMatchers("api/v1/company/**").hasRole("ADMIN")
-//                        .requestMatchers("api/v1/equipment/company/**").hasRole("ADMIN")
-//                        .requestMatchers("api/v1/equipment/save/**").hasRole("ADMIN")
-//                        .requestMatchers("api/v1/equipment/**").hasRole("ADMIN")
-//                        .requestMatchers("api/v1/equipment/**").permitAll()
-//                        .requestMatchers("api/v1/equipment/all/**").hasRole("ADMIN")
-//                        .requestMatchers("api/v1/appointment/save").hasRole("ADMIN")
-//                        .requestMatchers("api/v1/appointment/**").hasRole("USER")
-//                        .requestMatchers("api/v1/cancellation/**").hasRole("USER")
-                                .requestMatchers("**").permitAll()
+                        //AUTH CONTROLLER
+                        .requestMatchers("api/v1/auth/**").permitAll()
+
+                        //APPOINTMENT CONTROLLER
+                        .requestMatchers("api/v1/appointment/id/**").hasAnyRole()
+                        .requestMatchers("api/v1/appointment/all").hasRole("USER")
+                        .requestMatchers("api/v1/appointment/save").hasAnyRole()
+                        .requestMatchers("api/v1/appointment/delete/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/appointment/byCompany/**").hasAnyRole()
+                        .requestMatchers("api/v1/appointment/update/**").hasRole("ADMIN")
+
+                        //CANCELLATION CONTROLLER
+                        .requestMatchers("api/v1/cancellation/**").hasRole("USER")
+
+                        //COMPANY CONTROLLER
+                        .requestMatchers("api/v1/company/id/**").hasAnyRole()
+                        .requestMatchers("api/v1/company/all").permitAll()
+                        .requestMatchers("api/v1/company/update/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/company/save").hasRole("SYSADMIN")
+                        .requestMatchers("api/v1/company/**/admins").hasRole("ADMIN")
+                        .requestMatchers(" api/v1/company/companyId//**").hasRole("ADMIN")
+
+                        //EQUIPMENT CONTROLLER
+                        .requestMatchers("api/v1/equipment/id/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/equipment/all").permitAll()
+                        .requestMatchers("api/v1/equipment/update/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/equipment/save").hasRole("ADMIN")
+                        .requestMatchers("api/v1/equipment/delete/**").hasRole("ADMIN")
+                        .requestMatchers(" api/v1/equipment/company/**").hasAnyRole()
+
+                        //RESERVATION CONTROLLER
+                        .requestMatchers("api/v1/reservation/save").hasRole("USER")
+                        .requestMatchers("api/v1/reservation/id/**").hasAnyRole()
+                        .requestMatchers("api/v1/reservation/user/**").hasRole("USER")
+                        .requestMatchers("api/v1/reservation/company/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/reservation/cancel/**").hasRole("USER")
+
+                        //USER CONTROLLER
+                        .requestMatchers("api/v1/users/**").hasRole("SYSADMIN")
+
                         .anyRequest().authenticated()
                 ).cors(Customizer.withDefaults());
 

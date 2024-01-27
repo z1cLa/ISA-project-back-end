@@ -30,7 +30,7 @@ public class ReservationController {
         return reservationService.save(reservation);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Reservation getReservationById(@PathVariable Integer id) {
         return reservationService.getReservationById(id);
     }

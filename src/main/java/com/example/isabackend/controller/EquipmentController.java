@@ -18,7 +18,7 @@ public class EquipmentController {
 
     private final EquipmentService equipmentService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Equipment getCompanyById(@PathVariable Integer id) {
         return equipmentService.findById(id);
     }

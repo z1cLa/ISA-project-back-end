@@ -18,7 +18,7 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Appointment getAppointmentById(@PathVariable Integer id) {
         return appointmentService.findById(id);
     }
