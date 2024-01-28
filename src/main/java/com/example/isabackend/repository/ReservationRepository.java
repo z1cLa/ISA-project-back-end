@@ -14,4 +14,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r FROM Reservation r WHERE r.appointment.company.id = ?1")
     public List<Reservation> getCompanyReservations(Integer id);
+
+    List<Reservation> findByStatus(String status);
 }

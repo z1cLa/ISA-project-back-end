@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/reservation")
@@ -56,6 +57,22 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error occurred: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/in-progress")
+    public List<Reservation> getInProgressReservations() {
+        return reservationService.getInProgressReservations();
+    }
+
+    @PutMapping("/finish/{reservationId}")
+    public ResponseEntity<String> finishReservation(@PathVariable Integer reservationId) {
+        Optional<Reservation> updatedReservation = reservationService.finishReservation(reservationId);
+
+        return updatedReservation.map(reservation ->
+                ResponseEntity.ok("Reservation with ID " + reservationId + " has been finished.")
+        ).orElseGet(() ->
+                ResponseEntity.status(404).body("Reservation with ID " + reservationId + " not found.")
+        );
     }
 
 }

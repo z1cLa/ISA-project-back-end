@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -96,4 +97,21 @@ public class ReservationService {
         Reservation reservation = this.reservationRepository.findById(id).orElseGet(null);
         return reservation;
     }
+
+    public List<Reservation> getInProgressReservations() {
+        return reservationRepository.findByStatus("In progress");
+    }
+
+    public Optional<Reservation> finishReservation(Integer reservationId) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
+
+        if (optionalReservation.isPresent()) {
+            Reservation reservation = optionalReservation.get();
+            reservation.setStatus("Finished");
+            reservationRepository.save(reservation);
+        }
+
+        return optionalReservation;
+    }
+
 }
