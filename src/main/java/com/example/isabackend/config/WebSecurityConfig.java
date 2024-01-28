@@ -105,7 +105,7 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/company/update/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/company/save").hasRole("SYSADMIN")
                         //.requestMatchers("api/v1/company/**/admins").hasRole("ADMIN")
-                        .requestMatchers(" api/v1/company/companyId//**").hasRole("ADMIN")
+                        .requestMatchers(" api/v1/company/companyId/**").hasRole("ADMIN")
 
                         //EQUIPMENT CONTROLLER
                         .requestMatchers("api/v1/equipment/id/**").hasRole("ADMIN")
@@ -113,7 +113,7 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/equipment/update/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/equipment/save").hasRole("ADMIN")
                         .requestMatchers("api/v1/equipment/delete/**").hasRole("ADMIN")
-                        .requestMatchers(" api/v1/equipment/company/**").hasAnyRole("USER","ADMIN","SYSADMIN")
+                        .requestMatchers("api/v1/equipment/**").permitAll()
 
                         //RESERVATION CONTROLLER
                         .requestMatchers("api/v1/reservation/save").hasRole("USER")
