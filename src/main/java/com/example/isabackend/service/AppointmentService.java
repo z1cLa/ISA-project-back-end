@@ -1,16 +1,26 @@
 package com.example.isabackend.service;
 
 import com.example.isabackend.model.Appointment;
+import com.example.isabackend.model.Company;
 import com.example.isabackend.repository.AppointmentRepository;
+import com.example.isabackend.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private UserService userService;
@@ -48,6 +58,65 @@ public class AppointmentService {
         return updatedAppointment;
     }
 
+    public List<Time> findFreeTimesByDateAndCompanyId(Date date, Integer companyId)
+    {
+        date.setHours(0);
+        List<Appointment> appointments =appointmentRepository.findAllByDateAndCompany_IdAndIsReservedIsTrue(date, companyId);
+        List<Time> freeTimes = new ArrayList<>();
+        Company company = companyService.findById(companyId);
+        Time workStarts = new java.sql.Time(0, 0, 0);
+        Time workEnds = new java.sql.Time(20, 0, 0);
+        Time currentTime = workStarts;
+        boolean today = isToday(date);
 
+        while (currentTime.before(workEnds)) {
+            boolean flag =true;
+            for (Appointment appointment : appointments) {
+                if (currentTime.equals(addHours(appointment.getTime(),appointment.getDuration())) || currentTime.equals(appointment.getTime()) || (currentTime.after(appointment.getTime()) && currentTime.before(addHours(appointment.getTime(),appointment.getDuration())))) {
+                    flag = false;
+                }
+                Time currentTime2 =new Time(currentTime.getTime() + 3600000);
+                if (currentTime2.equals(addHours(appointment.getTime(),appointment.getDuration())) || currentTime2.equals(appointment.getTime()) || (currentTime2.after(appointment.getTime()) && currentTime2.before(addHours(appointment.getTime(),appointment.getDuration())))) {
+                    flag = false;
+                }
+            }
+            if(today)
+            {
+                if(isBeforeNow(currentTime))
+                {
+                    flag = false;
+                }
+            }
+            if(flag)
+            {
+                freeTimes.add(currentTime);
+            }
 
+            currentTime = new Time(currentTime.getTime() + 3600000);
+        }
+        return freeTimes;
+    }
+    private static Time addHours(Time time,Integer duration) {
+        long durationLong = (long) duration;
+        long currentTimeInMillis = time.getTime();
+        long newTimeInMillis = currentTimeInMillis + 3600000*durationLong; // 3600000 milliseconds = 1 hour
+        return new Time(newTimeInMillis);
+    }
+
+    public static boolean isToday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        Calendar compareCalendar = Calendar.getInstance();
+        compareCalendar.setTime(date);
+
+        return calendar.get(Calendar.YEAR) == compareCalendar.get(Calendar.YEAR)
+                && calendar.get(Calendar.MONTH) == compareCalendar.get(Calendar.MONTH)
+                && calendar.get(Calendar.DAY_OF_MONTH) == compareCalendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    private static boolean isBeforeNow(Time time) {
+        LocalTime currentTime = LocalTime.now();
+        LocalTime compareTime = time.toLocalTime();
+
+        return compareTime.isBefore(currentTime);
+    }
 }

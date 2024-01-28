@@ -95,6 +95,8 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/appointment/delete/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/appointment/byCompany/**").hasAnyRole("USER","ADMIN","SYSADMIN")
                         .requestMatchers("api/v1/appointment/update/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/appointment/freeTimes/**").hasRole("USER")
+
 
                         //CANCELLATION CONTROLLER
                         .requestMatchers("api/v1/cancellation/**").hasRole("USER")
