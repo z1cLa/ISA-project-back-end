@@ -104,7 +104,7 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/company/all").permitAll()
                         .requestMatchers("api/v1/company/update/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/company/save").hasRole("SYSADMIN")
-                        .requestMatchers("api/v1/company/**/admins").hasRole("ADMIN")
+                        //.requestMatchers("api/v1/company/**/admins").hasRole("ADMIN")
                         .requestMatchers(" api/v1/company/companyId//**").hasRole("ADMIN")
 
                         //EQUIPMENT CONTROLLER

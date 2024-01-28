@@ -98,10 +98,10 @@ public class UserService implements UserDetailsService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            List<Role> adminRoles = roleService.findByName("ROLE_ADMIN");
+            List<Role> adminRoles = roleService.findByName("ROLE_SYSADMIN");
 
-            // Add ADMIN role to the user's roles
-            user.getRoles().addAll(adminRoles);
+            // Set the user's roles to the new admin roles
+            user.setRoles(adminRoles);
 
             // Save the user with the updated roles
             userRepository.save(user);

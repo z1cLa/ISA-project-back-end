@@ -17,7 +17,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/{userId}/make-admin")
+    @PutMapping("/{userId}/make-admin")
     public ResponseEntity<String> makeUserAdmin(@PathVariable Integer userId) {
         try {
             userService.makeUserAdmin(userId);
