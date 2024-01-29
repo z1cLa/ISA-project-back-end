@@ -69,21 +69,18 @@ public class ReservationController {
         Optional<Reservation> updatedReservation = reservationService.finishReservation(reservationId);
 
         return updatedReservation.map(reservation -> {
-            if (isAppointmentDateValid(reservation.getAppointment().getDate())) {
-                return ResponseEntity.ok("Reservation with ID " + reservationId + " has been finished.");
-            } else {
-                return ResponseEntity.status(400).body("Appointment date is before the current date. Cannot finish the reservation.");
-            }
+            return ResponseEntity.ok("Reservation with ID " + reservationId + " has been finished.");
         }).orElseGet(() ->
                 ResponseEntity.status(404).body("Reservation with ID " + reservationId + " not found.")
         );
     }
 
+
     private boolean isAppointmentDateValid(Date appointmentDate) {
         Date currentDate = new Date();
-
         return !appointmentDate.before(currentDate);
     }
+
 
     @PutMapping("/update-status")
     public ResponseEntity<String> updateReservationStatus() {
