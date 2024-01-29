@@ -69,6 +69,43 @@ public class ReservationService {
         }
     }
 
+    @Async
+    public void sendTakeEquipmentMail(Reservation reservation) throws MessagingException {
+        String subject = "Taking equipment confirmation";
+        String mailContent = "<html><head>" +
+                "<style>" +
+                "body { font-family: 'Arial', sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; }" +
+                ".container { max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }" +
+                "h1 { color: #333; }" +
+                "p { font-size: 16px; color: #555; line-height: 1.5; }" +
+                ".confirmation-message { font-size: 18px; color: #0066cc; }" +
+                ".footer { font-size: 14px; color: #777; margin-top: 20px; }" +
+                "</style>" +
+                "</head><body>";
+
+        mailContent += "<div class='container'>";
+        mailContent += "<h1>Dear " + reservation.getUser().getFirstName() + ",</h1>";
+        mailContent += "<p class='confirmation-message'>Your equipment has been taken successfully!</p>";
+        mailContent += "<p>We hope you enjoy using it. If you have any questions, feel free to contact us.</p>";
+        mailContent += "<p class='footer'>Thank you,<br/>ISA Group 7</p>";
+        mailContent += "</div>";
+
+        mailContent += "</body></html>";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+
+        try {
+            helper.setTo(reservation.getUser().getEmail());
+            helper.setSubject(subject);
+            helper.setText(mailContent, true);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public byte[] generateQRCodeImage(String text, int width, int height) throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
@@ -137,6 +174,11 @@ public class ReservationService {
             Reservation reservation = optionalReservation.get();
             reservation.setStatus("Finished");
             reservationRepository.save(reservation);
+            try {
+                this.sendTakeEquipmentMail(reservation);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return optionalReservation;
