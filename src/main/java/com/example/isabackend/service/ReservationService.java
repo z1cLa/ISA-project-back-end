@@ -1,6 +1,7 @@
 package com.example.isabackend.service;
 
 import com.example.isabackend.model.Appointment;
+import com.example.isabackend.model.Equipment;
 import com.example.isabackend.model.Reservation;
 import com.example.isabackend.model.User;
 import com.example.isabackend.repository.AppointmentRepository;
@@ -25,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -121,6 +124,16 @@ public class ReservationService {
 
     public List<Reservation> getFinishedReservationsByUserId(Integer userId) {
         return reservationRepository.findByUserIdAndStatus(userId, "finished");
+    }
+
+    public int getPriceForReservation(Integer reservationId){
+        Set<Equipment> equipment = reservationRepository.findEquipmentsByReservationId(reservationId);
+        List<Equipment> equipmentList = new ArrayList<>(equipment);
+        int sumOfPrice=0;
+        for (Equipment equip : equipmentList) {
+            sumOfPrice = sumOfPrice+equip.getEquipmentPrice();
+        }
+        return sumOfPrice;
     }
 
 }

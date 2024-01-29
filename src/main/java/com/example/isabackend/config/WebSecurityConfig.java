@@ -126,6 +126,7 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/reservation/company/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/reservation/cancel/**").hasRole("USER")
                         .requestMatchers("api/v1/reservation/finishedForUser/**").hasRole("USER")
+                        .requestMatchers("api/v1/reservation/totalPriceForReservation/**").hasRole("USER")
 
                         //USER CONTROLLER
                         .requestMatchers("api/v1/users/**").hasRole("SYSADMIN")

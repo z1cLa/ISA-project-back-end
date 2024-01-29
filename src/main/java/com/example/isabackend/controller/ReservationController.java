@@ -62,4 +62,9 @@ public class ReservationController {
         return reservationService.getFinishedReservationsByUserId(userId);
     }
 
+    @GetMapping("/totalPriceForReservation/{reservationId}")
+    public int getTotalPriceForReservation(@PathVariable Integer reservationId) {
+        return reservationService.getPriceForReservation(reservationId);
+    }
+
 }
