@@ -111,6 +111,24 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Transactional
+    public void makeUserCompanyAdmin(Integer userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<Role> adminRoles = roleService.findByName("ROLE_ADMIN");
+
+            // Set the user's roles to the new admin roles
+            user.setRoles(adminRoles);
+
+            // Save the user with the updated roles
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+    }
+
     public User save(User exam) {
         return userRepository.save(exam);
     }

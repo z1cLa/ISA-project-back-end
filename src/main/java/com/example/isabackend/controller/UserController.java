@@ -27,5 +27,16 @@ public class UserController {
                     .body("User not found with ID: " + userId);
         }
     }
+
+    @PutMapping("/{userId}/make-company-admin")
+    public ResponseEntity<String> makeUserCompanyAdmin(@PathVariable Integer userId) {
+        try {
+            userService.makeUserCompanyAdmin(userId);
+            return ResponseEntity.ok("User has been successfully assigned the COMPANY ADMIN role.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found with ID: " + userId);
+        }
+    }
 }
 
