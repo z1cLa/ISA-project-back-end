@@ -5,6 +5,7 @@ import com.example.isabackend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
@@ -14,4 +15,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r FROM Reservation r WHERE r.appointment.company.id = ?1")
     public List<Reservation> getCompanyReservations(Integer id);
+
+    List<Reservation> findByStatus(String status);
+
+    @Query("SELECT r FROM Reservation r WHERE r.user.id = ?1 AND r.status = 'In progress'")
+    public List<Reservation> getUserInProgressReservations(Integer id);
 }
