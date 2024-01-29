@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
 import java.util.Set;
 
 @Data
@@ -17,6 +18,8 @@ public class CompanyDTO {
     private String companyName;
     private String address;
     private String description;
+    private Time startTime;
+    private Time endTime;
     private Float averageGrade;
     private Integer appointmentId;
     private Set<User> admins;
