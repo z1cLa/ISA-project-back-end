@@ -143,7 +143,6 @@ public class AuthController {
             existingUser.setFirstName(updatedUserDTO.getFirstName());
             existingUser.setLastName(updatedUserDTO.getLastName());
             existingUser.setEmail(updatedUserDTO.getEmail());
-            existingUser.setPassword(updatedUserDTO.getPassword());
             existingUser.setCountry(updatedUserDTO.getCountry());
             existingUser.setCity(updatedUserDTO.getCity());
             existingUser.setProfession(updatedUserDTO.getProfession());

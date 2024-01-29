@@ -111,7 +111,6 @@ public class UserService implements UserDetailsService {
     }
 
     public User save(User exam) {
-        exam.setPassword(passwordEncoder.encode(exam.getPassword()));
         return userRepository.save(exam);
     }
 
