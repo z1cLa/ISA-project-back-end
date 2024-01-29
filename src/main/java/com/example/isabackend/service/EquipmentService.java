@@ -8,10 +8,12 @@ import com.example.isabackend.repository.EquipmentRepository;
 import com.example.isabackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class EquipmentService {
     private final EquipmentRepository equipmentRepository;
 

@@ -1,5 +1,6 @@
 package com.example.isabackend.service;
 
+import com.example.isabackend.model.Appointment;
 import com.example.isabackend.model.Reservation;
 import com.example.isabackend.model.User;
 import com.example.isabackend.repository.AppointmentRepository;
@@ -13,10 +14,13 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
+@Transactional
 public class ReservationService {
 
     @Autowired
@@ -74,16 +79,33 @@ public class ReservationService {
         return this.reservationRepository.getCompanyReservations(id);
     }
 
+    @Transactional
     public Reservation save(Reservation exam) throws IOException, WriterException, MessagingException {
-        // First, save the reservation to the database to get the generated ID
-        Reservation savedReservation = reservationRepository.save(exam);
+        Appointment appointment = appointmentService.findById(exam.getAppointment().getId());
 
-        // Now, the savedReservation object should have an ID
-        byte[] qrCode = this.generateQRCodeImage("http://localhost:5173/reservation/" + savedReservation.getId(), 300, 300);
-        this.sendReservationMail(savedReservation, qrCode);
+        synchronized (appointment) {
+            if (appointment.getIsReserved()) {
+                return null; // Appointment already reserved, decline the request
+            }
 
-        // Return the saved reservation
-        return savedReservation;
+            try {
+                // Attempt to save the reservation
+                Reservation savedReservation = reservationRepository.save(exam);
+
+                // Update appointment to mark it as reserved
+                appointmentService.updateWhenReserved(appointment);
+
+                // Generate QR code and send email
+                byte[] qrCode = this.generateQRCodeImage("http://localhost:5173/reservation/" + savedReservation.getId(), 300, 300);
+                this.sendReservationMail(savedReservation, qrCode);
+
+                // Return the saved reservation
+                return savedReservation;
+            } catch (PessimisticLockingFailureException | DataIntegrityViolationException e) {
+                // Handle locking failure or unique constraint violation
+                return null;
+            }
+        }
     }
 
     public void cancelReservation(Integer id, Integer points){

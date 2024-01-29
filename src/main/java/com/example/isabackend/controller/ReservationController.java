@@ -25,9 +25,8 @@ public class ReservationController {
 
     @PostMapping("/save")
     public Reservation saveReservation(@RequestBody Reservation reservation) throws IOException, WriterException, MessagingException {
-        Appointment appointment = appointmentService.findById(reservation.getAppointment().getId());
-        appointmentService.updateWhenReserved(appointment);
-        return reservationService.save(reservation);
+        Reservation reservationRet = reservationService.save(reservation);
+        return reservationRet;
     }
 
     @GetMapping("/id/{id}")

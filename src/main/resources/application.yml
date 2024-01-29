@@ -26,6 +26,7 @@ spring:
     password: zgyp ombx nggr ngnt
     port: '587'
 
+
 server:
   port: 8090
 
@@ -34,3 +35,6 @@ logging:
     org:
       springframework:
         security: DEBUG
+springdoc:
+  api-docs:
+    path: '/swagger-ui'

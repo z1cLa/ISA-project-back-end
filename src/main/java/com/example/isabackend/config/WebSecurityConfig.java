@@ -87,6 +87,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(requests -> requests
                         //AUTH CONTROLLER
                         .requestMatchers("api/v1/auth/**").permitAll()
+                        .requestMatchers("swagger-ui/**").permitAll()
 
                         //APPOINTMENT CONTROLLER
                         .requestMatchers("api/v1/appointment/id/**").hasAnyRole("USER","ADMIN","SYSADMIN")
