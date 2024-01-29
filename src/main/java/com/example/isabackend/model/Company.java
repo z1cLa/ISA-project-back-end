@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,12 @@ public class Company {
 
     @Column
     private String description;
+
+    @Column
+    private Time startTime;
+
+    @Column
+    private Time endTime;
 
     @Column
     private Float averageGrade;

@@ -29,7 +29,11 @@ public class AppointmentService {
 
     public List<Appointment> findAll() {return appointmentRepository.findAll();}
 
-    public Appointment save(Appointment exam) {return appointmentRepository.save(exam);}
+    public Appointment save(Appointment exam)
+    {
+        exam.getDate().setHours(0);
+        return appointmentRepository.save(exam);
+    }
 
     public void remove(Integer id) {
         appointmentRepository.deleteById(id);
@@ -62,10 +66,17 @@ public class AppointmentService {
     {
         date.setHours(0);
         List<Appointment> appointments =appointmentRepository.findAllByDateAndCompany_IdAndIsReservedIsTrue(date, companyId);
+        List<Appointment> appointments2 =appointmentRepository.findAllByDateAndCompany_IdAndIsCompaniesAppointmentIsTrue(date, companyId);
+        for (Appointment appointment2 : appointments2)
+        {
+            appointments.add(appointment2);
+        }
         List<Time> freeTimes = new ArrayList<>();
         Company company = companyService.findById(companyId);
-        Time workStarts = new java.sql.Time(0, 0, 0);
-        Time workEnds = new java.sql.Time(20, 0, 0);
+        Time workStarts = company.getStartTime();
+        Time workEnds = company.getEndTime();
+        //Time workStarts = new java.sql.Time(0, 0, 0);
+        //Time workEnds = new java.sql.Time(20, 0, 0);
         Time currentTime = workStarts;
         boolean today = isToday(date);
 
