@@ -2,6 +2,7 @@ package com.example.isabackend.service;
 
 import com.example.isabackend.model.Appointment;
 import com.example.isabackend.model.Company;
+import com.example.isabackend.model.User;
 import com.example.isabackend.repository.AppointmentRepository;
 import com.example.isabackend.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AppointmentService {
@@ -35,12 +33,25 @@ public class AppointmentService {
         return appointmentRepository.save(exam);
     }
 
+    public Appointment saveForSpecificAppointmen(Appointment exam)
+    {
+        exam.getDate().setHours(0);
+        Set<User> admins = companyService.getAdminsByCompanyId(exam.getCompany().getId());
+        List<User> adminList = new ArrayList<>(admins);
+        int numberOfAdmins = adminList.size();
+        Random random = new Random();
+        int randomNumber = random.nextInt(numberOfAdmins);
+        User randomAdmin = adminList.get(randomNumber);
+        exam.setUser(randomAdmin);
+        return appointmentRepository.save(exam);
+    }
+
     public void remove(Integer id) {
         appointmentRepository.deleteById(id);
     }
 
     public List<Appointment> findByCompanyIdAndIsReservedFalse(Integer companyId) {
-        return appointmentRepository.findByCompanyIdAndIsReservedFalse(companyId);
+        return appointmentRepository.findByCompanyIdAndIsCompaniesAppointmentIsTrueAndIsReservedFalse(companyId);
     }
 
     public Appointment updateWhenReserved(Appointment appointment) {

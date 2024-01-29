@@ -33,6 +33,10 @@ public class AppointmentController {
     public Appointment saveAppointment(@RequestBody Appointment appointment) {
         return appointmentService.save(appointment);
     }
+    @PostMapping("/saveForSpecificAppointment")
+    public Appointment saveForSpecificAppointment(@RequestBody Appointment appointment) {
+        return appointmentService.saveForSpecificAppointmen(appointment);
+    }
     @DeleteMapping("/delete/{id}")
     public void deleteAppointment(@PathVariable Integer id) {
         appointmentService.remove(id);
