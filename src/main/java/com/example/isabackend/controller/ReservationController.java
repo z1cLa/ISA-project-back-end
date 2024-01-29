@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,11 +69,27 @@ public class ReservationController {
     public ResponseEntity<String> finishReservation(@PathVariable Integer reservationId) {
         Optional<Reservation> updatedReservation = reservationService.finishReservation(reservationId);
 
-        return updatedReservation.map(reservation ->
-                ResponseEntity.ok("Reservation with ID " + reservationId + " has been finished.")
-        ).orElseGet(() ->
+        return updatedReservation.map(reservation -> {
+            if (isAppointmentDateValid(reservation.getAppointment().getDate())) {
+                return ResponseEntity.ok("Reservation with ID " + reservationId + " has been finished.");
+            } else {
+                return ResponseEntity.status(400).body("Appointment date is before the current date. Cannot finish the reservation.");
+            }
+        }).orElseGet(() ->
                 ResponseEntity.status(404).body("Reservation with ID " + reservationId + " not found.")
         );
+    }
+
+    private boolean isAppointmentDateValid(Date appointmentDate) {
+        Date currentDate = new Date();
+
+        return !appointmentDate.before(currentDate);
+    }
+
+    @PutMapping("/update-status")
+    public ResponseEntity<String> updateReservationStatus() {
+        reservationService.updateReservationStatus();
+        return ResponseEntity.ok("Reservation status updated successfully");
     }
 
 }

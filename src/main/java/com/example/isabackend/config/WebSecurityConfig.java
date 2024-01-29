@@ -121,8 +121,10 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/reservation/user/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers("api/v1/reservation/company/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/reservation/cancel/**").hasRole("USER")
-                        .requestMatchers("/api/v1/reservation/in-progress").hasRole("ADMIN")
-                        .requestMatchers(" api/v1/reservation/finish/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/reservation/in-progress").hasRole("ADMIN")
+                        .requestMatchers("api/v1/reservation/finish/**").hasRole("ADMIN")
+                        .requestMatchers("api/v1/reservation/update-status").permitAll()
+
 
 
                         //USER CONTROLLER

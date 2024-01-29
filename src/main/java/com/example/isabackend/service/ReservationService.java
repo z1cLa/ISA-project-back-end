@@ -4,6 +4,7 @@ import com.example.isabackend.model.Reservation;
 import com.example.isabackend.model.User;
 import com.example.isabackend.repository.AppointmentRepository;
 import com.example.isabackend.repository.ReservationRepository;
+import com.example.isabackend.repository.UserRepository;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -11,6 +12,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +35,9 @@ public class ReservationService {
 
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -68,7 +74,7 @@ public class ReservationService {
     }
 
     public List<Reservation> getUserReservations(Integer id){
-        return this.reservationRepository.getUserReservations(id);
+        return this.reservationRepository.getUserInProgressReservations(id);
     }
 
     public List<Reservation> getCompanyReservations(Integer id){
@@ -113,5 +119,23 @@ public class ReservationService {
 
         return optionalReservation;
     }
+
+    @Transactional
+    public void updateReservationStatus() {
+        List<Reservation> reservations = reservationRepository.findAll();
+
+        for (Reservation reservation : reservations) {
+
+            if (!isAppointmentDateValid(reservation.getAppointment().getDate()) && !"Declined".equals(reservation.getStatus())) {
+                reservation.setStatus("Declined");
+                reservation.getUser().setPenaltyPoints(+2);
+            }
+        }
+    }
+    private boolean isAppointmentDateValid(Date appointmentDate) {
+        Date currentDate = new Date();
+        return !appointmentDate.before(currentDate);
+    }
+
 
 }
