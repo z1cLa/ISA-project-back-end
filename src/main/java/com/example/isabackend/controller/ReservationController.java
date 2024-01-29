@@ -87,5 +87,16 @@ public class ReservationController {
         reservationService.updateReservationStatus();
         return ResponseEntity.ok("Reservation status updated successfully");
     }
+    
+    @GetMapping("/finishedForUser/{userId}")
+    public List<Reservation> getFinishedReservationsByUserId(@PathVariable Integer userId) {
+        return reservationService.getFinishedReservationsByUserId(userId);
+    }
+
+    @GetMapping("/totalPriceForReservation/{reservationId}")
+    public int getTotalPriceForReservation(@PathVariable Integer reservationId) {
+        return reservationService.getPriceForReservation(reservationId);
+    }
 
 }
+

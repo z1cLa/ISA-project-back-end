@@ -128,8 +128,8 @@ public class WebSecurityConfig {
                         .requestMatchers("api/v1/reservation/in-progress").hasRole("ADMIN")
                         .requestMatchers("api/v1/reservation/finish/**").hasRole("ADMIN")
                         .requestMatchers("api/v1/reservation/update-status").permitAll()
-
-
+                        .requestMatchers("api/v1/reservation/finishedForUser/**").hasRole("USER")
+                        .requestMatchers("api/v1/reservation/totalPriceForReservation/**").hasRole("USER")
 
                         //USER CONTROLLER
                         .requestMatchers("api/v1/users/**").hasRole("SYSADMIN")
