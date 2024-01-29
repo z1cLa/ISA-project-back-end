@@ -57,4 +57,9 @@ public class ReservationController {
         }
     }
 
+    @GetMapping("/finishedForUser/{userId}")
+    public List<Reservation> getFinishedReservationsByUserId(@PathVariable Integer userId) {
+        return reservationService.getFinishedReservationsByUserId(userId);
+    }
+
 }

@@ -118,4 +118,9 @@ public class ReservationService {
         Reservation reservation = this.reservationRepository.findById(id).orElseGet(null);
         return reservation;
     }
+
+    public List<Reservation> getFinishedReservationsByUserId(Integer userId) {
+        return reservationRepository.findByUserIdAndStatus(userId, "finished");
+    }
+
 }
