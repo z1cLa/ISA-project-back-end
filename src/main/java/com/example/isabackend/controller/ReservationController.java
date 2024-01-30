@@ -2,6 +2,7 @@ package com.example.isabackend.controller;
 
 import com.example.isabackend.model.Appointment;
 import com.example.isabackend.model.Company;
+import com.example.isabackend.model.Equipment;
 import com.example.isabackend.model.Reservation;
 import com.example.isabackend.service.AppointmentService;
 import com.example.isabackend.service.ReservationService;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/reservation")
@@ -74,6 +76,12 @@ public class ReservationController {
                 ResponseEntity.status(404).body("Reservation with ID " + reservationId + " not found.")
         );
     }
+
+    @GetMapping("/equipment/{id}")
+    public Set<Equipment> getInProgressReservations(@PathVariable Integer id) {
+        return reservationService.getReservationEquipment(id);
+    }
+
 
 
     private boolean isAppointmentDateValid(Date appointmentDate) {
