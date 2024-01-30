@@ -219,4 +219,8 @@ public class ReservationService {
         return sumOfPrice;
     }
 
+    public List<Reservation> getUserReservationsForQRCodes(Integer id){
+        return this.reservationRepository.findByUserId(id);
+    }
+
 }

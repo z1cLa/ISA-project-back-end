@@ -98,5 +98,10 @@ public class ReservationController {
         return reservationService.getPriceForReservation(reservationId);
     }
 
+    @GetMapping("/userQrReservations/{id}")
+    public List<Reservation> getUserReservationsForQRCodes(@PathVariable Integer id) {
+        return reservationService.getUserReservationsForQRCodes(id);
+    }
+
 }
 
