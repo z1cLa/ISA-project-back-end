@@ -157,4 +157,21 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping(value = "/userPassword/{id}", consumes = "application/json")
+    public ResponseEntity<UserDTO> updateUserPassword(@PathVariable Integer id, @RequestBody UserDTO updatedUserDTO) {
+        User existingUser = userService.findOne(id);
+
+        if (existingUser != null) {
+            // Update existingUser with values from updatedUserDTO
+            existingUser.setPassword(updatedUserDTO.getPassword());
+
+            // Save the updated user
+            existingUser = userService.saveUserPassword(existingUser);
+
+            return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

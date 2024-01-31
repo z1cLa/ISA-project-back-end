@@ -133,6 +133,12 @@ public class UserService implements UserDetailsService {
         return userRepository.save(exam);
     }
 
+    public User saveUserPassword(User exam)
+    {
+        exam.setPassword(passwordEncoder.encode(exam.getPassword()));
+        return userRepository.save(exam);
+    }
+
     public void remove(Integer id) {
         userRepository.deleteById(id);
     }
