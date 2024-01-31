@@ -6,6 +6,7 @@ import com.example.isabackend.model.Equipment;
 import com.example.isabackend.model.Reservation;
 import com.example.isabackend.service.AppointmentService;
 import com.example.isabackend.service.ReservationService;
+import com.example.isabackend.service.UserService;
 import com.google.zxing.WriterException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ import java.util.Set;
 public class ReservationController {
     private final ReservationService reservationService;
     private final AppointmentService appointmentService;
+
+    private final UserService userService;
 
     @PostMapping("/save")
     public Reservation saveReservation(@RequestBody Reservation reservation) throws IOException, WriterException, MessagingException {
@@ -53,7 +56,9 @@ public class ReservationController {
     public ResponseEntity<?> cancelReservation(@PathVariable Integer reservationId,
                                                @PathVariable Integer points) {
         try {
+            userService.addPenaltyPoints(reservationService.getReservationById(reservationId).getUser().getId().intValue(), points);
             reservationService.cancelReservation(reservationId, points);
+
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
