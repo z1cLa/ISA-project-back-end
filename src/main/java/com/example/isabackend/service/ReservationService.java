@@ -210,7 +210,7 @@ public class ReservationService {
 
 
     public List<Reservation> getFinishedReservationsByUserId(Integer userId) {
-        return reservationRepository.findByUserIdAndStatus(userId, "finished");
+        return reservationRepository.findByUserIdAndStatus(userId, "Finished");
     }
 
     public int getPriceForReservation(Integer reservationId){
