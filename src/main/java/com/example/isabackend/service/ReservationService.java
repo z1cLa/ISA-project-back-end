@@ -187,6 +187,10 @@ public class ReservationService {
         return optionalReservation;
     }
 
+    public Set<Equipment> getReservationEquipment(Integer reservationId){
+        return this.reservationRepository.findEquipmentsByReservationId(reservationId);
+    }
+
     @Transactional
     public void updateReservationStatus() {
         List<Reservation> reservations = reservationRepository.findAll();
